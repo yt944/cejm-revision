@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEJM Révisions BTS</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FBF8F3;--cream2:#F5F0E8;--cream3:#EDE6D8;
+  --sage:#7BA99A;--sage-l:#EAF3F0;--sage-m:#C2DDD7;
+  --lav:#8B8FCC;--lav-l:#EEEEF8;--lav-m:#C8C9E8;
+  --peach:#E8846A;--peach-l:#FDF0EC;
+  --gold:#C9934A;--gold-l:#FDF3E4;
+  --rose:#C97A8A;--rose-l:#FAEEF1;
+  --ink:#2C2A26;--ink2:#4A4740;--ink3:#7A776E;--ink4:#A8A49C;
+  --bd:#E4DDD0;--bd2:#D4CABC;--white:#FFFFFF;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink);background:var(--cream);min-height:100vh}
+.hdr{background:var(--white);border-bottom:1px solid var(--bd);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:50}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;background:var(--sage);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:13px;font-weight:600;color:#fff}
+.logo-txt{font-family:'Lora',serif;font-size:17px;font-weight:600;color:var(--ink)}
+.logo-sub{font-size:11px;color:var(--ink4);display:block;margin-top:-1px}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stat-chip{background:var(--cream);border:1px solid var(--bd);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--ink2)}
+.save-ind{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sage);font-weight:500;background:var(--sage-l);border:1px solid var(--sage-m);border-radius:20px;padding:4px 10px}
+.save-dot{width:6px;height:6px;border-radius:50%;background:var(--sage)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.saving{animation:pulse 1s infinite}
+.xp-row{background:var(--white);border-bottom:1px solid var(--bd);padding:10px 24px;display:flex;align-items:center;gap:12px}
+.lvl-badge{background:var(--lav);color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;white-space:nowrap}
+.xp-track{flex:1;height:7px;background:var(--cream2);border-radius:20px;overflow:hidden}
+.xp-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--sage),var(--lav));transition:width .6s ease}
+.xp-txt{font-size:11px;color:var(--ink4);white-space:nowrap}
+.nav{background:var(--white);border-bottom:1px solid var(--bd);padding:0 24px;display:flex;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{padding:12px 16px;font-size:13px;font-weight:500;color:var(--ink3);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;font-family:inherit}
+.nav-btn.active{color:var(--sage);border-bottom-color:var(--sage)}
+.nav-btn:hover:not(.active){color:var(--ink)}
+.content{padding:24px;max-width:720px;margin:0 auto}
+.sec-lbl{font-size:11px;font-weight:600;color:var(--ink4);letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--bd)}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:28px}
+.ch-card{background:var(--white);border:1px solid var(--bd);border-radius:14px;padding:16px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden}
+.ch-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;background:var(--bar,var(--sage))}
+.ch-card:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(44,42,38,.09)}
+.ch-num{font-size:10px;font-weight:600;color:var(--ink4);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.ch-title{font-size:13px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:10px}
+.ch-tag{display:inline-flex;font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px}
+.t-eco{background:var(--sage-l);color:var(--sage)}
+.t-droit{background:var(--gold-l);color:var(--gold)}
+.t-mgt{background:var(--rose-l);color:var(--rose)}
+.t-num{background:var(--lav-l);color:var(--lav)}
+.t-rh{background:var(--peach-l);color:var(--peach)}
+.ch-prog{margin-top:10px;height:3px;background:var(--cream2);border-radius:4px;overflow:hidden}
+.ch-prog-fill{height:100%;border-radius:4px;transition:width .3s}
+.ch-done-badge{position:absolute;top:12px;right:12px;width:18px;height:18px;background:var(--sage);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(44,42,38,.4);backdrop-filter:blur(4px);z-index:100;overflow-y:auto;padding:20px}
+.modal-overlay.open{display:block}
+.modal-card{background:var(--white);border-radius:20px;max-width:600px;margin:0 auto;overflow:hidden;box-shadow:0 8px 40px rgba(44,42,38,.18)}
+.modal-hdr{background:var(--cream);padding:16px 20px;display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--bd)}
+.back-btn{background:var(--white);border:1px solid var(--bd);border-radius:10px;padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--ink2);transition:all .15s;white-space:nowrap}
+.back-btn:hover{background:var(--cream2)}
+.modal-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--ink);line-height:1.3}
+.modal-tags{display:flex;gap:6px;margin-top:3px;flex-wrap:wrap}
+.modal-tag{background:var(--cream2);border-radius:6px;padding:2px 7px;font-size:11px;font-weight:500;color:var(--ink3)}
+.modal-body{padding:22px}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mode-btn{background:var(--cream);border:1px solid var(--bd);border-radius:14px;padding:18px 16px;cursor:pointer;text-align:left;transition:all .18s;font-family:inherit;position:relative}
+.mode-btn::after{content:'→';position:absolute;bottom:14px;right:14px;font-size:14px;color:var(--ink4);transition:all .2s}
+.mode-btn:hover{border-color:var(--bd2);background:var(--white);transform:translateY(-1px);box-shadow:0 2px 12px rgba(44,42,38,.07)}
+.mode-btn:hover::after{right:10px;color:var(--sage)}
+.mode-ic{font-size:24px;margin-bottom:10px}
+.mode-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.mode-desc{font-size:11px;color:var(--ink3);line-height:1.4}
+.kw-wrap{margin-top:12px;padding:12px 14px;background:var(--lav-l);border-radius:12px;border:1px solid var(--lav-m)}
+.kw-lbl{font-size:10px;font-weight:600;color:var(--lav);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.kw-tag{display:inline-block;background:var(--white);border:1px solid var(--lav-m);border-radius:6px;padding:2px 8px;font-size:11px;color:var(--lav);font-weight:500;margin:2px}
+.fiche-block{background:var(--cream);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.fiche-block-title{font-size:11px;font-weight:600;color:var(--ink4);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.fiche-item{font-size:13px;color:var(--ink2);line-height:1.6;padding:7px 10px;background:var(--white);border-radius:8px;margin-bottom:6px;border:1px solid var(--bd)}
+.fiche-item b{color:var(--sage);font-weight:600}
+.fiche-formula{font-size:12px;color:var(--ink);background:var(--white);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;font-family:monospace;line-height:1.6}
+.q-prog{display:flex;gap:4px;margin-bottom:16px}
+.qdot{flex:1;height:4px;background:var(--cream2);border-radius:4px;transition:background .3s}
+.qdot.done{background:var(--sage)}
+.qdot.cur{background:var(--lav)}
+.q-txt{font-size:15px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:16px}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--bd);border-radius:12px;padding:13px 16px;cursor:pointer;font-size:13px;color:var(--ink2);text-align:left;font-family:inherit;transition:all .15s;line-height:1.4;font-weight:500}
+.quiz-opt:hover:not(:disabled){background:var(--white);border-color:var(--sage-m)}
+.quiz-opt.correct{background:var(--sage-l);border-color:var(--sage);color:#3d7a6c}
+.quiz-opt.wrong{background:var(--rose-l);border-color:var(--rose);color:#8a3a4a}
+.quiz-fb{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.5;display:none}
+.quiz-fb.show{display:block}
+.quiz-fb.ok{background:var(--sage-l);color:#3d7a6c;border:1px solid var(--sage-m)}
+.quiz-fb.ko{background:var(--rose-l);color:#8a3a4a;border:1px solid #e8b4be}
+.q-ctx{background:var(--lav-l);border-left:3px solid var(--lav);border-radius:0 10px 10px 0;padding:12px 14px;font-size:13px;color:var(--ink2);margin-bottom:12px;line-height:1.6}
+.q-hint{background:var(--gold-l);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--gold);font-style:italic;margin-bottom:14px}
+textarea{width:100%;min-height:120px;background:var(--cream);border:1.5px solid var(--bd);border-radius:12px;padding:13px 14px;font-size:13px;font-family:inherit;color:var(--ink);resize:vertical;outline:none;transition:border .15s;line-height:1.6}
+textarea:focus{border-color:var(--lav);background:var(--white)}
+.btn-main{background:var(--sage);color:#fff;border:none;border-radius:12px;padding:12px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;width:100%;margin-top:12px}
+.btn-main:hover{background:#6a9889;transform:translateY(-1px)}
+.btn-main:disabled{opacity:.5;cursor:default;transform:none}
+.btn-lav{background:var(--lav);color:#fff;border:none;border-radius:12px;padding:12px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;width:100%;margin-top:12px}
+.btn-lav:hover{background:#7a7ebc;transform:translateY(-1px)}
+.btn-lav:disabled{opacity:.5;cursor:default;transform:none}
+.btn-sec{background:var(--white);color:var(--ink2);border:1.5px solid var(--bd);border-radius:12px;padding:11px 18px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-sec:hover{border-color:var(--bd2);background:var(--cream)}
+.ai-box{background:var(--cream);border:1.5px solid var(--bd);border-radius:14px;padding:16px;margin-top:14px;display:none}
+.ai-box.show{display:block}
+.ai-hdr{font-size:11px;font-weight:600;color:var(--lav);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ai-dot-anim{width:6px;height:6px;border-radius:50%;background:var(--lav);animation:pulse 1.2s infinite;display:inline-block}
+.ai-text{font-size:13px;line-height:1.7;color:var(--ink2);white-space:pre-wrap}
+.score-wrap{text-align:center;padding:20px 0}
+.score-num{font-family:'Lora',serif;font-size:32px;font-weight:600;color:var(--ink)}
+.score-pct{font-size:14px;color:var(--ink3);margin-top:4px}
+.score-badge{display:inline-block;margin:12px 0;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600}
+.s-a{background:var(--sage-l);color:#3d7a6c}
+.s-b{background:var(--lav-l);color:#5a5ea0}
+.s-c{background:var(--gold-l);color:#8a6020}
+.s-d{background:var(--rose-l);color:#8a3a4a}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:24px}
+.met-card{background:var(--white);border:1px solid var(--bd);border-radius:14px;padding:16px;text-align:center}
+.met-ic{font-size:28px;margin-bottom:3px}
+.met-val{font-family:'Lora',serif;font-size:26px;font-weight:600;color:var(--ink)}
+.met-lbl{font-size:11px;color:var(--ink4);font-weight:500;margin-top:2px}
+.lvl-card{background:var(--lav-l);border:1px solid var(--lav-m);border-radius:14px;padding:16px;margin-bottom:24px}
+.lvl-name{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--lav);margin-bottom:8px}
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:10px 12px;background:var(--white);border:1px solid var(--bd);border-radius:10px;cursor:pointer;transition:all .15s}
+.prog-row:hover{border-color:var(--bd2);box-shadow:0 2px 8px rgba(44,42,38,.06)}
+.prog-row-title{flex:1;font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog-bar-sm{flex:0 0 80px;height:5px;background:var(--cream2);border-radius:4px;overflow:hidden}
+.prog-bar-sm-fill{height:100%;background:var(--sage);border-radius:4px}
+.prog-pct{font-size:11px;color:var(--ink4);min-width:30px;text-align:right}
+.save-banner{background:var(--sage-l);border:1px solid var(--sage-m);border-radius:12px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-size:13px;color:#3d7a6c;flex-wrap:wrap}
+.reset-btn{background:var(--white);border:1px solid #e8b4be;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:500;color:var(--rose);cursor:pointer;font-family:inherit;margin-left:auto}
+.reset-btn:hover{background:var(--rose-l)}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--sage);color:#fff;border-radius:20px;padding:9px 18px;font-size:13px;font-weight:600;z-index:9999;transform:translateY(60px);opacity:0;transition:all .3s;pointer-events:none;box-shadow:0 4px 16px rgba(123,169,154,.4)}
+.toast.show{transform:translateY(0);opacity:1}
+.dots{display:flex;gap:5px;padding:12px 0}
+.dots span{width:7px;height:7px;border-radius:50%;background:var(--lav);animation:bounce .9s infinite}
+.dots span:nth-child(2){animation-delay:.15s}
+.dots span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.nw{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+@media(max-width:600px){.hdr{padding:12px 16px}.content{padding:16px}.mode-grid{grid-template-columns:1fr}.ch-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-mark">C</div>
+      <div><div class="logo-txt">CEJM</div><span class="logo-sub">Révisions BTS 1ère &amp; 2ème année</span></div>
+    </div>
+    <div class="hdr-right">
+      <div class="save-ind"><div class="save-dot" id="save-dot"></div><span id="save-lbl">Chargement...</span></div>
+      <div class="stat-chip">🔥 <span id="streak-v">0</span></div>
+      <div class="stat-chip">⭐ <span id="xp-v">0</span> XP</div>
+      <div class="stat-chip">✅ <span id="done-v">0</span></div>
+    </div>
+  </div>
+  <div class="xp-row">
+    <div class="lvl-badge" id="lvl-b">Niveau 1 · Novice</div>
+    <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+    <div class="xp-txt" id="xp-txt">0 / 200 XP</div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn active" onclick="showTab('chapitres',this)">📚 Chapitres</button>
+    <button class="nav-btn" onclick="showTab('quiz',this)">🎯 Quiz rapide</button>
+    <button class="nav-btn" onclick="showTab('situation',this)">💼 Mise en situation</button>
+    <button class="nav-btn" onclick="showTab('progression',this)">📊 Progression</button>
+  </div>
+  <div class="content" id="main-content"></div>
+</div>
+<div class="modal-overlay" id="modal">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <button class="back-btn" onclick="closeModal()">← Retour</button>
+      <div style="flex:1;min-width:0">
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-tags" id="modal-tags"></div>
+      </div>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const SAVE_KEY="cejm-v3";
+let S={xp:0,streak:0,done:0,lastDay:null,prog:{}};
+
+function loadState(){
+  try{const d=localStorage.getItem(SAVE_KEY);if(d)S={...S,...JSON.parse(d)};showSaveStatus('loaded');}catch(e){}
+  updateHeader();
+}
+function saveState(){
+  showSaveStatus('saving');
+  try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));showSaveStatus('saved');}catch(e){showSaveStatus('error');}
+}
+let saveTO=null;
+function scheduleSave(){clearTimeout(saveTO);saveTO=setTimeout(saveState,800);}
+function showSaveStatus(s){
+  const dot=document.getElementById('save-dot'),lbl=document.getElementById('save-lbl'),ind=document.querySelector('.save-ind');
+  if(s==='saving'){dot.classList.add('saving');lbl.textContent='Sauvegarde...';ind.style.cssText='color:var(--gold);background:var(--gold-l);border-color:#EDD09A;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;border-radius:20px;padding:4px 10px';}
+  else if(s==='saved'){dot.classList.remove('saving');lbl.textContent='Sauvegardé ✓';ind.style.cssText='color:var(--sage);background:var(--sage-l);border-color:var(--sage-m);display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;border-radius:20px;padding:4px 10px;border:1px solid';}
+  else if(s==='loaded'){dot.classList.remove('saving');lbl.textContent='Progression chargée';ind.style.cssText='color:var(--lav);background:var(--lav-l);border-color:var(--lav-m);display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;border-radius:20px;padding:4px 10px;border:1px solid';setTimeout(()=>showSaveStatus('saved'),2000);}
+}
+async function resetProgress(){
+  if(!confirm('Réinitialiser toute votre progression ?'))return;
+  S={xp:0,streak:0,done:0,lastDay:null,prog:{}};
+  localStorage.removeItem(SAVE_KEY);updateHeader();renderChaps();showToast('🔄 Progression réinitialisée');showSaveStatus('saved');
+}
+const levels=[{n:"Novice",max:200},{n:"Étudiant",max:500},{n:"Apprenti",max:1000},{n:"Confirmé",max:2000},{n:"Expert",max:4000},{n:"Champion CEJM",max:99999}];
+function getLv(x){for(let i=0;i<levels.length;i++){if(x<levels[i].max)return{idx:i,...levels[i],prev:i>0?levels[i-1].max:0}}return{idx:levels.length-1,...levels[levels.length-1],prev:levels[levels.length-2].max}}
+function updateHeader(){
+  document.getElementById('xp-v').textContent=S.xp;
+  document.getElementById('streak-v').textContent=S.streak;
+  document.getElementById('done-v').textContent=S.done;
+  const lv=getLv(S.xp);
+  document.getElementById('lvl-b').textContent='Niv.'+(lv.idx+1)+' · '+lv.n;
+  const pct=((S.xp-lv.prev)/(lv.max-lv.prev))*100;
+  document.getElementById('xp-fill').style.width=Math.min(100,pct)+'%';
+  document.getElementById('xp-txt').textContent=S.xp+' / '+lv.max+' XP';
+}
+function awardXP(n,label){
+  S.xp+=n;S.done++;
+  const today=new Date().toDateString();
+  if(S.lastDay!==today){S.streak++;S.lastDay=today;}
+  updateHeader();scheduleSave();showToast('+'+n+' XP · '+label);
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+
+async function callAI(systemPrompt,userContent){
+  const r=await fetch('/api/gemini',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemPrompt,userContent})});
+  if(!r.ok)throw new Error('Erreur serveur '+r.status);
+  const d=await r.json();
+  if(d.error)throw new Error(d.error);
+  return d.text;
+}
+
+const chapters=[
+  {id:1,num:"1",title:"Relations entre agents économiques",year:1,tag:"eco",tagLabel:"Économie",bar:"#7BA99A",keywords:["agent économique","entreprise","ménages","banques","administrations","flux réels","flux monétaires"],fiche:{def:["Un agent économique est une catégorie de personnes assurant une fonction économique principale.","Flux réels : échanges de biens, services et force de travail.","Flux monétaires : paiements, salaires, crédits, épargne, impôts."],agents:[["Entreprises","Vente de biens/services marchands à prix concurrentiel"],["Ménages","Consommation + offre de force de travail"],["Banques","Collecte épargne + accords de crédits (intermédiaire ABF/ACF)"],["Administrations","Production non marchande financée par l'impôt"]],formule:"Production → Revenus → Dépenses"}},
+  {id:2,num:"2",title:"Fonctionnement des marchés",year:1,tag:"eco",tagLabel:"Économie",bar:"#7BA99A",keywords:["marché des biens","marché du travail","marché des capitaux","offre","demande","externalités","asymétrie d'information"],fiche:{def:["Si offre > demande → prix baisse. Si demande > offre → prix monte.","Externalité = impact positif/négatif sans contrepartie financière.","Asymétrie d'information : accès inégal à l'information entre acteurs."],agents:[["Marché B&S","Entreprises (offreurs) ↔ Ménages (demandeurs)"],["Marché travail","Ménages (offre) ↔ Entreprises (demande)"],["Marché capitaux","ABF (demandeurs) ↔ ACF (offreurs)"]],formule:"CPP : homogénéité + accès info + atomicité + absence barrières"}},
+  {id:3,num:"3",title:"Formation du contrat",year:1,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["contrat","consentement","dol","erreur","violence","pourparlers","capacité"],fiche:{def:["Contrat = accord de volonté destiné à créer des obligations.","Pourparlers = discussions pré-contractuelles librement rompables de bonne foi.","Vices du consentement : erreur, dol, violence → nullité du contrat."],agents:[["Conditions validité","Consentement + Capacité + Objet certain et licite"],["Avant-contrats","Promesse unilatérale, bilatérale, pacte de préférence"],["Rupture abusive","Dommages et intérêts si rupture de mauvaise foi"]],formule:"Contrat nul si une condition de validité n'est pas remplie"}},
+  {id:4,num:"4",title:"Contenu du contrat",year:1,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["force obligatoire","imprévision","clause résolutoire","clause pénale","clause limitative","clause d'indexation"],fiche:{def:["Force obligatoire : un contrat légalement formé doit être exécuté.","Imprévision : changement économique réduisant fortement la rentabilité.","Une clause définit des droits et obligations spécifiques dans le contrat."],agents:[["Clauses exécution","Résolutoire, réserve propriété, pénale, limitative responsabilité"],["Clauses évolution","Renégociation, indexation / révision du prix"],["Irrévocabilité","Sauf accord mutuel, CDI avec préavis, ou imprévision"]],formule:"Accord mutuel des parties → modification possible du contrat"}},
+  {id:5,num:"5",title:"Finalités et performances",year:1,tag:"mgt",tagLabel:"Management",bar:"#C97A8A",keywords:["finalité économique","finalité sociale","finalité sociétale","parties prenantes","Freeman","efficacité","efficience"],fiche:{def:["Finalité = raison d'être guidant l'entreprise sur le long terme.","Freeman : l'entreprise doit répondre aux attentes de toutes ses parties prenantes.","Efficience = atteindre les objectifs en optimisant les moyens."],agents:[["Finalité économique","Satisfaire les clients et créer de la valeur (profit)"],["Finalité sociale","Bien-être des salariés, bonnes conditions de travail"],["Finalité sociétale","Impact positif sur la société et le développement durable"]],formule:"Efficacité = atteindre objectifs | Efficience = optimiser les moyens"}},
+  {id:6,num:"6",title:"Entreprendre et manager",year:1,tag:"mgt",tagLabel:"Management",bar:"#C97A8A",keywords:["Schumpeter","entrepreneur","manager","logique entrepreneuriale","logique managériale","performance"],fiche:{def:["Schumpeter : entrepreneur = visionnaire capable d'innover.","Logique entrepreneuriale : repérer opportunités, innover, prendre des risques.","Logique managériale : fixer objectifs, définir moyens, diriger RH, contrôler résultats."],agents:[["Étapes création","Idée → Étude marché → Business plan → Financement → Statut → Formalités"],["KPIs éco","CA, marge, volume production, parts de marché, rentabilité"],["KPIs sociaux","Absentéisme, promotions, formation, égalité H/F"]],formule:"Performance = Résultats / Objectifs fixés"}},
+  {id:7,num:"7",title:"Rôle de l'État et politiques économiques",year:1,tag:"eco",tagLabel:"Économie",bar:"#7BA99A",keywords:["PIB","inflation","chômage","balance commerciale","politique économique","allocation","redistribution"],fiche:{def:["3 fonctions de l'État : allocation des ressources, redistribution, régulation.","PIB = somme des valeurs ajoutées sur un territoire.","Carré magique de Kaldor : croissance, plein-emploi, stabilité prix, équilibre extérieur."],agents:[["Croissance","PIB + IDH"],["Plein-emploi","Taux de chômage"],["Stabilité prix","Taux d'inflation"],["Balance","Solde commercial"]],formule:"Taux de croissance = (PIB N – PIB N-1) / PIB N-1 × 100"}},
+  {id:8,num:"8",title:"Influence des politiques économiques",year:1,tag:"eco",tagLabel:"Économie",bar:"#7BA99A",keywords:["politique conjoncturelle","politique budgétaire","politique monétaire","BCE","politique de l'offre","politique de la demande"],fiche:{def:["Politique de l'offre : faciliter l'activité des entreprises.","Politique de la demande : soutenir la demande en améliorant le pouvoir d'achat.","BCE ↓ taux directeur → ↑ crédits → ↑ consommation → ↑ PIB"],agents:[["Conjoncturelle","Résoudre déséquilibres via budget et taux d'intérêt"],["Budgétaire","Réguler offre/demande via recettes et dépenses publiques"],["Monétaire","Contrôler masse monétaire via taux directeur BCE"],["Structurelle","Modifier structures éco/sociales pour compétitivité"]],formule:"Déficit < 3% PIB | Dette publique < 60% PIB"}},
+  {id:9,num:"9",title:"Régulation des activités économiques",year:1,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["concurrence déloyale","ententes illicites","position dominante","brevet","marque","INPI","contrefaçon"],fiche:{def:["Ententes illicites : accord entre entreprises pour fixer prix ou limiter production.","Abus position dominante : entreprise éliminant la concurrence abusivement.","Contrefaçon = imitation d'un brevet, marque ou design sans autorisation."],agents:[["Actes déloyaux","Désorganisation, dénigrement, imitation, parasitisme"],["Brevet","20 ans monopole | Nouveauté + appli industrielle + activité inventive"],["Marque","10 ans renouvelable | INPI (France), EUIPO (Europe), OMPI (Monde)"]],formule:"Responsabilité civile = Faute + Préjudice + Lien de causalité"}},
+  {id:10,num:"10",title:"Environnement de l'entreprise",year:1,tag:"eco",tagLabel:"Économie",bar:"#7BA99A",keywords:["PESTEL","macro-environnement","micro-environnement","innovation","OCDE","compétitivité"],fiche:{def:["PESTEL : Politique, Économique, Socioculturel, Technologique, Écologique, Légal.","4 types d'innovations (OCDE) : produit, procédé, commercialisation, organisation.","L'innovation crée un avantage concurrentiel."],agents:[["Innovation produit","Création ou amélioration d'un produit"],["Innovation procédé","Nouvelle méthode de production ou distribution"],["Innovation commercialisation","Design, placement, promotion, tarif"],["Innovation organisation","Méthodes sociales et sociétales"]],formule:"Veille informationnelle → R&D → Protection brevet"}},
+  {id:11,num:"11",title:"Choix de production",year:1,tag:"eco",tagLabel:"Économie",bar:"#7BA99A",keywords:["facteurs de production","combinaison productive","chaine de valeur","Porter","impartition","intégration"],fiche:{def:["Facteurs de production : travail, capital, matières premières, connaissances.","Combinaison optimale : la moins chère et la plus efficace.","Chaîne de valeur (Porter) : activités de soutien + activités principales."],agents:[["Faire","Stratégie d'intégration (conserver en interne)"],["Faire faire","Stratégie d'impartition (externaliser)"],["Substituables","Capital OU travail interchangeables"],["Complémentaires","Capital ET travail tous deux nécessaires"]],formule:"Développement durable = Croissance éco + Équilibres écologiques + Sociaux"}},
+  {id:12,num:"12",title:"Structure juridique",year:1,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["EI","EURL","SASU","SARL","SA","SAS","IR","IS","TNS","ESS"],fiche:{def:["EI : responsabilité illimitée (sauf EIRL). Statut TNS, imposition à l'IR.","Sociétés à RL : SA, SARL, SAS, SASU. Imposition à l'IS (28%).","ESS : mutuelles et coopératives."],agents:[["Unipersonnel","EI, EIRL, EURL, SASU"],["Pluripersonnel","SARL (max 100 ass.), SA, SAS"],["TNS","Moins de cotisations, moins de protections"],["Salarié","Plus de cotisations, plus de protections"]],formule:"Part de marché associés = (valeur € par associé / capital social) × 100"}},
+  {id:13,num:"13",title:"Gestion des risques numériques",year:1,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["responsabilité civile","responsabilité pénale","obligation de résultat","obligation de moyens","dommage"],fiche:{def:["9 types de risques : environnementaux, matériels, technologiques, numériques, terroristes, politiques, sanitaires, professionnels, commerciaux.","RC : fait générateur + dommage + lien de causalité.","Obligation de résultat : inexécution = faute automatique."],agents:[["RC contractuelle","Dommage issu d'une faute dans le contrat"],["RC extra-contrat.","Dommage en dehors d'un contrat"],["Exonérations","Cause étrangère, force majeure, abus de fonction"]],formule:"Dommage réparable = certain + direct + protégé par la loi"}},
+  {id:14,num:"14",title:"Styles de management",year:1,tag:"mgt",tagLabel:"Management",bar:"#C97A8A",keywords:["Likert","paternaliste","autoritaire","consultatif","participatif","processus","RSE"],fiche:{def:["Rensis Likert : 4 styles = paternaliste, autoritaire, consultatif, participatif.","Un processus = ensemble d'activités utilisant des ressources humaines et matérielles.","RSE = intégration volontaire de préoccupations sociales et sociétales."],agents:[["Paternaliste","Décision rapide, bonne ambiance MAIS peu de confiance"],["Autoritaire","Organisation rationnelle MAIS froideur, démotivation"],["Consultatif","Salariés écoutés MAIS pas décisionnaires"],["Participatif","Richesse décision, motivation MAIS lenteur"]],formule:"Processus productif + processus de support + processus de pilotage"}},
+  {id:15,num:"15",title:"Organisation des ressources",year:1,tag:"mgt",tagLabel:"Management",bar:"#C97A8A",keywords:["ressources tangibles","ressources intangibles","compétences","Mintzberg","coordination","SWOT"],fiche:{def:["Ressources tangibles : humaines, financières, physiques.","Effet d'expérience : ↑ production → ↓ coût unitaire.","Mintzberg : 4 structures (hiérarchique, fonctionnelle, divisionnelle, matricielle)."],agents:[["Ajustement mutuel","Communication informelle entre collègues"],["Supervision directe","Contrôle par ordres hiérarchiques"],["Standardisation","Des procédés, résultats, qualifications ou normes"]],formule:"SWOT = Forces + Faiblesses + Opportunités + Menaces"}},
+  {id:16,num:"16",title:"Financement de l'entreprise",year:1,tag:"eco",tagLabel:"Économie",bar:"#7BA99A",keywords:["investissement","cycle d'exploitation","FRNG","BFR","trésorerie","autofinancement","crowdfunding"],fiche:{def:["FRNG = Ressources stables – Emplois stables. Positif = bon équilibre.","BFR = Stocks + Créances clients – Dettes à court terme.","TN = FRNG – BFR. TN < 0 → découvert bancaire."],agents:[["Autofinancement","S'autofinancer avec ses propres bénéfices"],["Emprunt bancaire","Financement externe classique"],["Crowdfunding","Financement participatif via plateformes Internet"],["Crédit-bail","Location avec option d'achat (leasing)"]],formule:"FRNG > 0 ✓ | BFR > 0 → besoin financement | TN = FRNG – BFR"}},
+  {id:17,num:"1",title:"Évolutions économiques numériques",year:2,tag:"num",tagLabel:"Numérique",bar:"#8B8FCC",keywords:["B to B","B to C","C to C","désintermédiation","réintermédiation","place de marché","effets de réseau","ubérisation"],fiche:{def:["Désintermédiation : relations directes en ligne sans intermédiaire.","Place de marché : plateforme mettant en relation acheteurs/vendeurs contre commission.","Effets de réseau : plus les utilisateurs ↑, plus la plateforme est attractive."],agents:[["B to B","Entreprise → Entreprise (marchand)"],["B to C","Entreprise → Consommateur final (marchand)"],["C to C","Particulier → Particulier (non marchand)"],["Ubérisation","Mise en contact offreurs/demandeurs via appli mobile"]],formule:"Effets de réseau = externalités positives → cercle vertueux"}},
+  {id:18,num:"2",title:"Adaptation à l'économie numérique",year:2,tag:"num",tagLabel:"Numérique",bar:"#8B8FCC",keywords:["économie de l'usage","destruction créatrice","free to play","freemium","yield management"],fiche:{def:["Économie de l'usage : privilégier l'usage (location) plutôt que la possession.","Destruction créatrice (Schumpeter) : innovation technologique crée et détruit des emplois.","Yield management : tarification différenciée selon la demande."],agents:[["Free to play","Jeu gratuit + revenus publicité/achats in-app"],["Freemium","Offre basique gratuite + offre premium payante"],["Yield management","Prix variable selon taux d'occupation/demande"]],formule:"Numérique → Automatisation → Destruction créatrice → Nouveaux métiers"}},
+  {id:19,num:"3",title:"Protection des actifs immatériels",year:2,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["droit d'auteur","nom de domaine","logiciel","base de données","INPI","cybersquatting"],fiche:{def:["Droit d'auteur : protège les œuvres originales dès leur création.","Nom de domaine : réservation auprès d'un registrat + dépôt marque à l'INPI.","Cybersquatting : réservation de noms de domaine similaires à des marques connues."],agents:[["Site internet","Droit d'auteur ou marque à l'INPI"],["Logiciel","Droit d'auteur si original et concrétisé"],["Base de données","Droit sui generis (contenu) + droit d'auteur (structure)"]],formule:"Protection droit d'auteur = originalité + paternité + date création"}},
+  {id:20,num:"4",title:"Protection des personnes — RGPD",year:2,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["RGPD","données personnelles","droit à l'oubli","droit de rectification","CNIL","DPO"],fiche:{def:["RGPD : Règlement Général sur la Protection des Données (européen).","Droits des personnes : accès, rectification, opposition, portabilité, oubli, réparation.","Obligations entreprises : sécurité, information, registre traitements, DPO."],agents:[["Droit accès","Consulter ses données collectées"],["Droit rectification","Corriger des données inexactes"],["Droit à l'oubli","Déréférencement et effacement"],["DPO","Délégué à la Protection des Données"]],formule:"Violation RGPD → sanction CNIL jusqu'à 4% CA mondial ou 20M€"}},
+  {id:21,num:"5",title:"La preuve électronique",year:2,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["contrat électronique","double-clic","signature électronique","force probante","droit de rétractation"],fiche:{def:["Écrit électronique = même force probante que papier si authentification + intégrité.","Double-clic : 1er clic = modifier, 2e clic = confirmer = contrat formé.","Contrat > 120€ : conservation 10 ans obligatoire."],agents:[["1er clic","Récapitulatif + possibilité de modifier la commande"],["2e clic","Confirmation → contrat formé entre les parties"],["Mentions oblig.","Identité vendeur, produit, paiement, livraison, CGV, RGPD, rétractation"]],formule:"Délai de rétractation = 14 jours pour la vente en ligne (B to C)"}},
+  {id:22,num:"6",title:"Numérique et management",year:2,tag:"num",tagLabel:"Numérique",bar:"#8B8FCC",keywords:["système d'information","SI","Big Data","alignement stratégique","réingénierie"],fiche:{def:["SI = ensemble organisé de ressources pour collecter, stocker, traiter et diffuser l'information.","Alignement stratégique : le SI doit être cohérent avec la stratégie de l'entreprise.","Réingénierie : analyser les processus pour améliorer la performance."],agents:[["Collecter","Informations internes et externes"],["Stocker","Fichiers, bases de données, cloud"],["Traiter","Analyser pour aider à la décision"],["Diffuser","Aux acteurs internes et externes"]],formule:"SI → aide à la décision stratégique, tactique et opérationnelle"}},
+  {id:23,num:"7",title:"Tendances du marché du travail",year:2,tag:"rh",tagLabel:"RH",bar:"#E8846A",keywords:["marché primaire","marché secondaire","insiders","outsiders","SMIC","contrats atypiques"],fiche:{def:["Marché segmenté : primaire (CDI stables) vs secondaire (précaire).","Insiders : CDI protégés. Outsiders : précaires soumis à la concurrence.","Si O > D → salaire ↓. Si D > O → salaire ↑."],agents:[["Taux activité","(Travailleurs + chômeurs 15-64 ans) / Pop. active × 100"],["Taux emploi","Pop. active / Pop. en âge de travailler × 100"],["Taux chômage","Chômeurs BIT / Pop. active × 100"],["CDI","85% | CDD, intérim, temps partiel : 15%"]],formule:"Paradoxe français : chômage élevé ET offres d'emploi non satisfaites coexistent"}},
+  {id:24,num:"8",title:"Politiques de l'emploi",year:2,tag:"rh",tagLabel:"RH",bar:"#E8846A",keywords:["politique active","politique passive","assurance chômage","Pôle Emploi","formation professionnelle","employabilité"],fiche:{def:["Politique active : ↑ emploi, ↓ chômage via service public, formation, contrats aidés.","Politique passive : rendre le chômage plus supportable (allocations Unédic).","Employabilité = capacité à trouver et conserver un emploi dans le temps."],agents:[["Pôle Emploi","Service public → accompagnement des chômeurs"],["Formation pro.","Améliorer compétences pour ↑ employabilité"],["Contrats aidés","PEC, emplois Francs+, territoires zéro chômeur"],["Apprentissage","Alternance formation / travail"]],formule:"Politique emploi = politique économique à LT pour ↑ taux d'emploi"}},
+  {id:25,num:"9",title:"Droit négocié et partenaires sociaux",year:2,tag:"droit",tagLabel:"Droit",bar:"#C9934A",keywords:["convention collective","accord collectif","syndicat","CSE","délégué syndical","principe de faveur"],fiche:{def:["Droit négocié : règles issues de la négociation entre partenaires sociaux.","Principe de faveur : la règle inférieure peut déroger à la supérieure si favorable au salarié.","CSE : instance unique de représentation du personnel dans les entreprises de +11 salariés."],agents:[["OSR nationale","Au moins 8% voix aux élections prof. de branche"],["Délégué syndical","Au moins 10% voix dans l'entreprise, négocie accords"],["Accord majoritaire","+ de 50% des suffrages au 1er tour élections"]],formule:"Hiérarchie : Constitution > Loi > Convention collective > Accord > Contrat"}},
+  {id:26,num:"10",title:"Le contrat de travail",year:2,tag:"rh",tagLabel:"RH",bar:"#E8846A",keywords:["CDI","CDD","CTT","lien de subordination","clause d'essai","clause de non-concurrence"],fiche:{def:["Contrat de travail : prestation + rémunération + lien de subordination.","Le lien de subordination est le critère déterminant du contrat de travail.","CDD/CTT obligatoirement écrits, motifs prévus par loi, max 2 renouvellements."],agents:[["CDI","Sans durée précise, écrit ou oral, rupture à tout moment"],["CDD/CTT","Motifs légaux obligatoires, requalifiable en CDI si non respecté"],["Clause essai","Durée limitée + max 1 renouvellement"],["Clause non-conc.","Limitée temps/espace/activités + contrepartie financière obligatoire"]],formule:"Requalification CDD → CDI si règles non respectées + sanctions pénales"}},
+  {id:27,num:"11",title:"Évolution du contrat de travail",year:2,tag:"rh",tagLabel:"RH",bar:"#E8846A",keywords:["modification contrat","licenciement","démission","rupture conventionnelle","PSE","GPEC"],fiche:{def:["Modification essentielle (rémunération, qualification, lieu) = accord obligatoire du salarié.","Licenciement abusif si pas de cause réelle et sérieuse.","Rupture conventionnelle individuelle : accord commun + homologation administrative."],agents:[["Licenc. perso.","Faute sérieuse, grave, lourde ou sans faute"],["Licenc. éco.","Difficultés éco, mutations techno, réorganisation, cessation activité"],["Démission","Volonté libre et non équivoque → pas d'indemnités chômage"],["RCC","Accord + organisations syndicales + validation administrative"]],formule:"PSE obligatoire dans entreprises +50 salariés pour limiter licenciements éco"}},
+  {id:28,num:"12",title:"Protection du salarié",year:2,tag:"rh",tagLabel:"RH",bar:"#E8846A",keywords:["discrimination","obligation de sécurité","formation professionnelle","CPF","VAE"],fiche:{def:["Obligation de sécurité = obligation de moyens renforcée.","Plan de développement des compétences : initiative de l'employeur.","CPF : compte personnel de formation crédité en euros pour chaque actif."],agents:[["Plan compétences","Initiative employeur : adapter salariés à leur poste"],["CPF","Initiative salarié : euros pour se former librement"],["VAE","Obtenir diplôme via reconnaissance compétences acquises"],["PTP","Congé pour se former et changer de métier"]],formule:"Refus de formation par le salarié = licenciement pour faute possible"}},
+  {id:29,num:"13",title:"Mutations du travail et emploi",year:2,tag:"rh",tagLabel:"RH",bar:"#E8846A",keywords:["GPEC","gestion des talents","motivation","Maslow","Herzberg","Adams","digital natives"],fiche:{def:["GPEC : adapter les RH aux besoins stratégiques de l'entreprise.","Maslow : besoins physiologiques → sécurité → appartenance → estime → réalisation.","Herzberg : facteurs d'hygiène ≠ facteurs de motivation."],agents:[["GPEC","Analyse RH → Évaluation besoins → Écart → Actions ciblées"],["Maslow","5 niveaux : physiologique, sécurité, appartenance, estime, réalisation"],["Herzberg","Hygiène = évite insatisfaction | Motivation = génère satisfaction"],["Adams","Ratio équité = avantages / contributions"]],formule:"Talent = combinaison rare de compétences rares (Thévenet & Dejoux)"}},
+  {id:30,num:"14",title:"Diagnostic et démarche stratégique",year:2,tag:"mgt",tagLabel:"Management",bar:"#C97A8A",keywords:["SWOT","PESTEL","5 forces Porter","DAS","diagnostic interne","diagnostic externe"],fiche:{def:["SWOT = Forces + Faiblesses (interne) + Opportunités + Menaces (externe).","5 forces de Porter : intensité concurrentielle, substituts, nouveaux entrants, fournisseurs, clients.","DAS : domaine d'activité stratégique homogène."],agents:[["Diag. interne","Ressources tangibles + intangibles → Forces / Faiblesses"],["Diag. externe","PESTEL + 5 forces → Opportunités / Menaces"],["Stratégie délibérée","Voulue par l'entreprise (anticipation)"],["Stratégie émergente","Non prévue, adaptative"]],formule:"Compétences distinctives = créer valeur + rare + difficilement imitable"}},
+  {id:31,num:"15",title:"Décision et choix stratégiques",year:2,tag:"mgt",tagLabel:"Management",bar:"#C97A8A",keywords:["Ansoff","décision stratégique","spécialisation","diversification","différenciation","domination par les coûts","croissance externe"],fiche:{def:["Décisions : stratégiques (LT) > tactiques (MT) > opérationnelles (CT).","Modèle IMC : Intelligence → Modélisation → Choix.","Porter : domination coûts, différenciation (↑ ou ↓), focalisation (niche)."],agents:[["Spécialisation","Même marché + même produit → pénétration"],["Diversification","Nouveaux produits ET/OU nouveaux marchés"],["Croissance interne","Développement par ses propres moyens"],["Croissance externe","Rachat, fusion d'entreprises"]],formule:"Ansoff : Produits actuels × Clients actuels → Spécialisation | Nouveaux → Diversification"}}
+];
+
+const quizBank={
+  1:[{q:"Quelle est la fonction économique principale des banques ?",opts:["Production marchande","Collecte de l'épargne et accords de crédits","Production non marchande","Consommation de biens"],ans:1,exp:"Les banques jouent un rôle d'intermédiaire entre ABF et ACF."},
+     {q:"Un flux monétaire correspond à :",opts:["L'échange de biens et services","L'offre de force de travail","Un versement de salaire ou d'impôt","La production d'un bien"],ans:2,exp:"Les flux monétaires portent sur des paiements : salaires, impôts, crédits, épargne."}],
+  2:[{q:"En situation de pénurie, que se passe-t-il ?",opts:["Le prix baisse","Le prix monte, l'offre augmente, la demande baisse","Le prix reste stable","La demande s'effondre"],ans:1,exp:"En pénurie (D>O), le prix monte, incitant les producteurs à offrir davantage."}],
+  3:[{q:"Le dol consiste en :",opts:["Une erreur involontaire","Un mensonge intentionnel pour pousser à contracter","Une contrainte physique","Un désaccord sur le prix"],ans:1,exp:"Le dol = tromperie intentionnelle destinée à obtenir le consentement."},
+     {q:"Si une condition de validité n'est pas remplie, le contrat est :",opts:["Résiliable","Nul","Suspendu","Modifiable unilatéralement"],ans:1,exp:"Toute violation des conditions de validité entraîne la nullité du contrat."}],
+  5:[{q:"Selon Freeman, le but de l'entreprise est :",opts:["Uniquement maximiser le profit","Répondre aux besoins de toutes les parties prenantes","Satisfaire uniquement les clients","Réduire les coûts"],ans:1,exp:"Freeman : répondre aux attentes de toutes ses parties prenantes permet d'être performante."}],
+  7:[{q:"Le taux de croissance se calcule :",opts:["PIB N × PIB N-1","(PIB N – PIB N-1) / PIB N-1 × 100","PIB / Population × 100","Exportations – Importations"],ans:1,exp:"Formule : (PIB N – PIB N-1) / PIB N-1 × 100."}],
+  9:[{q:"La durée du monopole d'un brevet est de :",opts:["5 ans","10 ans","20 ans","30 ans"],ans:2,exp:"Un brevet confère un monopole de 20 ans. La marque dure 10 ans (renouvelable)."}],
+  14:[{q:"Dans le style participatif, le processus de décision est :",opts:["Rapide et centralisé","Enrichi mais potentiellement lent","Délégué entièrement","Exclusivement géré par la direction"],ans:1,exp:"Le style participatif enrichit la prise de décision mais allonge le processus."}],
+  16:[{q:"Un BFR positif signifie :",opts:["Pas de besoin de financement","L'entreprise règle le fournisseur avant d'être payée","Excédent de trésorerie","TN positive"],ans:1,exp:"BFR > 0 : l'entreprise paye avant d'encaisser → besoin de financement."}],
+  17:[{q:"Les effets de réseau signifient :",opts:["Des coûts liés au réseau","Plus les utilisateurs augmentent, plus la plateforme est attractive","Une barrière à l'entrée","Une entente illicite"],ans:1,exp:"Effets de réseau = plus les utilisateurs augmentent, plus la plateforme est attractive."}],
+  20:[{q:"Le RGPD garantit notamment :",opts:["La gratuité des services","Le droit à l'oubli et de rectification des données","L'interdiction du e-commerce","La propriété des données par les entreprises"],ans:1,exp:"Le RGPD garantit : accès, rectification, opposition, portabilité, droit à l'oubli, réparation."}],
+  26:[{q:"Le critère déterminant du contrat de travail est :",opts:["La rémunération","La durée du travail","Le lien de subordination","La prestation de travail"],ans:2,exp:"Le lien de subordination distingue le contrat de travail des autres contrats."}],
+  29:[{q:"Selon Herzberg, les facteurs d'hygiène :",opts:["Génèrent de la motivation","Évitent l'insatisfaction mais ne créent pas de motivation","Correspondent aux besoins de réalisation","Sont liés à la promotion"],ans:1,exp:"Les facteurs d'hygiène (salaire, conditions) évitent l'insatisfaction, mais ne motivent pas."}],
+  31:[{q:"La croissance externe consiste à :",opts:["Développer par ses propres moyens","Racheter ou fusionner avec d'autres entreprises","Exporter ses produits","Augmenter la capacité interne"],ans:1,exp:"Croissance externe = acquérir d'autres entreprises pour croître rapidement."}]
+};
+
+const situations={
+  2:{scenario:`<strong>AirFlow</strong> fabrique des purificateurs d'air. Un concurrent utilise sa technologie brevetée sans autorisation et vend 30% moins cher. Par ailleurs, AirFlow pollue légèrement le quartier lors de sa fabrication.`,q:"Identifiez les deux types d'externalités et expliquez leur impact.",hint:"Pensez aux externalités positives (innovation) et négatives (pollution)."},
+  9:{scenario:`<strong>BioCook</strong> a développé une recette unique de biscuits bio après 3 ans de R&D. Un concurrent commercialise des biscuits quasi-identiques sous le nom "BioKook" avec un packaging similaire.`,q:"Analysez les protections disponibles et les actions qu'elle peut engager.",hint:"Conditions de brevetabilité, protection de la marque, actes de concurrence déloyale."},
+  14:{scenario:`<strong>TechRise</strong> emploie 45 personnes. Le directeur prend toutes les décisions seul. Turn-over : 35%, 70% des salariés se sentent peu impliqués.`,q:"Identifiez le style de management actuel, ses limites, et proposez une évolution.",hint:"Classification de Likert et processus de l'entreprise affectés."},
+  29:{scenario:`<strong>DataTech</strong>, 200 salariés, voit ses effectifs vieillir (âge moyen 52 ans). Les jeunes recrues réclament plus d'autonomie. Turn-over -30 ans : 40%.`,q:"Proposez une démarche GPEC adaptée et expliquez comment répondre aux attentes des digital natives.",hint:"Étapes GPEC, théories de motivation (Maslow, Herzberg), nouvelles pratiques managériales."}
+};
+
+const openQs={
+  3:{q:"Une entreprise propose à son fournisseur une clause permettant de modifier unilatéralement le prix. Le fournisseur signe sans lire. Deux mois plus tard, le prix est réduit de 40%. Le fournisseur peut-il contester ?",hint:"Analysez le consentement, la clause abusive, et les recours possibles."},
+  7:{q:"La France enregistre 8% de chômage et 6% d'inflation. Le gouvernement baisse les impôts sur les sociétés et augmente les allocations chômage. Identifiez les politiques économiques utilisées.",hint:"Carré magique de Kaldor, politiques de l'offre et de la demande."},
+  17:{q:"Airbnb met en relation propriétaires et voyageurs. Des hôteliers se plaignent de concurrence déloyale. Caractérisez le modèle économique d'Airbnb et analysez les enjeux concurrentiels.",hint:"Place de marché, réintermédiation, effets de réseau, ubérisation."},
+  25:{q:"Dans une PME de 80 salariés, le directeur veut imposer une flexibilité des horaires allant au-delà des dispositions légales contre une prime. Les syndicats refusent. Expliquez le processus de négociation collective applicable.",hint:"CSE, délégués syndicaux, accords majoritaires, principe de faveur."}
+};
+
+function showTab(tab,btn){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(tab==='chapitres')renderChaps();
+  else if(tab==='quiz')renderQuizRapide();
+  else if(tab==='situation')renderSitRapide();
+  else if(tab==='progression')renderProg();
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+
+function renderChaps(){
+  const mc=document.getElementById('main-content');
+  const card=(c)=>{
+    const p=S.prog[c.id]||0,pct=Math.min(100,Math.round((p/3)*100));
+    return `<div class="ch-card" style="--bar:${c.bar}" onclick="openCh(${c.id})">
+      ${p>=3?'<div class="ch-done-badge">✓</div>':''}
+      <div class="ch-num">Chapitre ${c.num}</div>
+      <div class="ch-title">${c.title}</div>
+      <div class="ch-tag t-${c.tag}">${c.tagLabel}</div>
+      <div class="ch-prog"><div class="ch-prog-fill" style="background:${c.bar};width:${pct}%"></div></div>
+    </div>`;
+  };
+  mc.innerHTML=`
+    <div class="sec-lbl">1ère année — 16 chapitres</div>
+    <div class="ch-grid">${chapters.filter(c=>c.year===1).map(card).join('')}</div>
+    <div class="sec-lbl">2ème année — 15 chapitres</div>
+    <div class="ch-grid">${chapters.filter(c=>c.year===2).map(card).join('')}</div>
+  `;
+}
+
+function openCh(id){
+  const c=chapters.find(x=>x.id===id);
+  document.getElementById('modal-title').textContent=c.title;
+  document.getElementById('modal-tags').innerHTML=`<span class="modal-tag">Chapitre ${c.num}</span><span class="modal-tag">${c.tagLabel}</span><span class="modal-tag">${c.year}ère année</span>`;
+  document.getElementById('modal-body').innerHTML=`
+    <div class="mode-grid">
+      <button class="mode-btn" onclick="doFiche(${id})"><div class="mode-ic">📋</div><div class="mode-name">Fiche de révision</div><div class="mode-desc">Définitions, notions clés, formules</div></button>
+      <button class="mode-btn" onclick="doQuiz(${id})"><div class="mode-ic">🎯</div><div class="mode-name">Quiz QCM</div><div class="mode-desc">Testez vos connaissances</div></button>
+      <button class="mode-btn" onclick="doOpen(${id})"><div class="mode-ic">✍️</div><div class="mode-name">Question ouverte</div><div class="mode-desc">Correction par l'IA</div></button>
+      <button class="mode-btn" onclick="doSit(${id})"><div class="mode-ic">💼</div><div class="mode-name">Mise en situation</div><div class="mode-desc">Cas pratique corrigé IA</div></button>
+    </div>
+    <div class="kw-wrap"><div class="kw-lbl">Mots-clés</div>${c.keywords.map(k=>`<span class="kw-tag">${k}</span>`).join('')}</div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function doFiche(id){
+  const c=chapters.find(x=>x.id===id),f=c.fiche;
+  document.getElementById('modal-body').innerHTML=`
+    <div class="fiche-block"><div class="fiche-block-title">📌 Définitions clés</div>${f.def.map(d=>`<div class="fiche-item">${d}</div>`).join('')}</div>
+    <div class="fiche-block"><div class="fiche-block-title">⚡ Points essentiels</div>${f.agents.map(([k,v])=>`<div class="fiche-item"><b>${k}</b> : ${v}</div>`).join('')}</div>
+    <div class="fiche-block"><div class="fiche-block-title">🔢 À retenir</div><div class="fiche-formula">${f.formule}</div></div>
+    <div class="kw-wrap" style="margin-top:10px"><div class="kw-lbl">Mots-clés</div>${c.keywords.map(k=>`<span class="kw-tag">${k}</span>`).join('')}</div>
+    <button class="btn-main" id="fiche-ok">✅ Fiche mémorisée · +10 XP</button>
+  `;
+  document.getElementById('fiche-ok').addEventListener('click',function(){
+    awardXP(10,'Fiche révisée');S.prog[id]=(S.prog[id]||0)+1;
+    this.textContent='✅ Mémorisé !';this.disabled=true;renderChaps();
+  },{once:true});
+}
+
+function doQuiz(id){
+  const qs=quizBank[id];
+  if(!qs||!qs.length){document.getElementById('modal-body').innerHTML=`<div style="padding:30px;text-align:center;color:var(--ink4)">Quiz en préparation.</div>`;return;}
+  let cur=0,sc=0;
+  function rQ(){
+    const q=qs[cur];
+    const dots=qs.map((_,i)=>`<div class="qdot${i<cur?' done':i===cur?' cur':''}"></div>`).join('');
+    document.getElementById('modal-body').innerHTML=`
+      <div class="q-prog">${dots}</div>
+      <div class="q-txt">${q.q}</div>
+      <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="pickOpt(${i})">${o}</button>`).join('')}</div>
+      <div class="quiz-fb" id="qfb"></div>
+      <div class="nw" id="qnxt" style="display:none"><button class="btn-main" onclick="nxtQ()" style="margin-top:0">${cur<qs.length-1?'Suivant →':'Résultats'}</button></div>
+    `;
+  }
+  window.pickOpt=function(i){
+    const q=qs[cur];
+    document.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
+    document.querySelectorAll('.quiz-opt')[i].classList.add(i===q.ans?'correct':'wrong');
+    if(i!==q.ans)document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+    const fb=document.getElementById('qfb');
+    fb.className='quiz-fb show '+(i===q.ans?'ok':'ko');
+    fb.textContent=(i===q.ans?'✅ Correct ! ':'❌ Incorrect. ')+q.exp;
+    if(i===q.ans)sc++;
+    document.getElementById('qnxt').style.display='flex';
+  };
+  window.nxtQ=function(){
+    cur++;
+    if(cur<qs.length){rQ();return;}
+    const pct=Math.round((sc/qs.length)*100),xp=sc*15;
+    const cls=pct>=80?'s-a':pct>=60?'s-b':pct>=40?'s-c':'s-d';
+    document.getElementById('modal-body').innerHTML=`
+      <div class="score-wrap">
+        <div style="font-size:48px;margin-bottom:10px">${pct>=80?'🏆':pct>=60?'😊':pct>=40?'🤔':'💪'}</div>
+        <div class="score-num">${sc}/${qs.length}</div>
+        <div class="score-pct">${pct}% de réussite</div>
+        <div><span class="score-badge ${cls}">+${xp} XP</span></div>
+        <div style="font-size:13px;color:var(--ink3);margin-bottom:20px">${pct>=80?'Excellent !':pct>=60?'Bien !':pct>=40?'Consultez la fiche.':'Recommencez après révision.'}</div>
+      </div>
+      <div class="nw">
+        <button class="btn-sec" onclick="doQuiz(${id})">🔄 Recommencer</button>
+        <button class="btn-main" onclick="openCh(${id})" style="margin-top:0">← Menu</button>
+      </div>
+    `;
+    awardXP(xp,'Quiz complété');S.prog[id]=(S.prog[id]||0)+1;renderChaps();
+  };
+  rQ();
+}
+
+function doOpen(id){
+  const q=openQs[id],c=chapters.find(x=>x.id===id);
+  const txt=q?q.q:`Définissez et illustrez 3 notions clés du chapitre "${c.title}".`;
+  const hint=q?q.hint:`Mobilisez les mots-clés : ${c.keywords.slice(0,4).join(', ')}.`;
+  document.getElementById('modal-body').innerHTML=`
+    <div class="q-ctx">${txt}</div>
+    <div class="q-hint">💡 ${hint}</div>
+    <textarea id="oa" placeholder="Rédigez votre réponse ici..."></textarea>
+    <button class="btn-lav" id="oa-btn" onclick="submitOpen(${id})">🤖 Correction par l'IA</button>
+    <div class="ai-box" id="ai-box"></div>
+  `;
+}
+window.submitOpen=async function(id){
+  const ans=document.getElementById('oa').value.trim();
+  if(!ans||ans.length<30){alert('Rédigez une réponse plus complète.');return;}
+  const btn=document.getElementById('oa-btn');btn.disabled=true;btn.textContent='Analyse en cours...';
+  const box=document.getElementById('ai-box');box.className='ai-box show';
+  box.innerHTML=`<div class="ai-hdr"><span class="ai-dot-anim"></span>Analyse en cours...</div><div class="dots"><span></span><span></span><span></span></div>`;
+  const c=chapters.find(x=>x.id===id),q=openQs[id];
+  const qTxt=q?q.q:`Définissez et illustrez 3 notions clés du chapitre "${c.title}".`;
+  try{
+    const text=await callAI(`Tu es professeur CEJM BTS expert. Corrige la réponse avec : 1) Note /20 + justification courte 2) Points forts ✅ (2-3) 3) Manques/erreurs ❌ (2-3) 4) Correction modèle (150 mots max).`,`CHAPITRE : ${c.title}\nQUESTION : ${qTxt}\nRÉPONSE : ${ans}`);
+    box.innerHTML=`<div class="ai-hdr">✨ Correction</div><div class="ai-text">${text}</div>`;
+    awardXP(25,'Question ouverte');S.prog[id]=(S.prog[id]||0)+1;btn.textContent='✅ Soumis';renderChaps();
+  }catch(e){
+    box.innerHTML=`<div class="ai-text">Erreur : ${e.message}</div>`;
+    btn.disabled=false;btn.textContent='🤖 Réessayer';
+  }
+};
+
+function doSit(id){
+  const s=situations[id],c=chapters.find(x=>x.id===id);
+  const scen=s?s.scenario:`<strong>Mise en situation</strong><br>Vous êtes consultant(e) analysant une PME de 40 salariés souhaitant se développer à l'international.`;
+  const q=s?s.q:`Analysez la situation en mobilisant les notions du chapitre "${c.title}".`;
+  const hint=s?s.hint:`Utilisez les mots-clés : ${c.keywords.slice(0,4).join(', ')}.`;
+  document.getElementById('modal-body').innerHTML=`
+    <div class="q-ctx" style="border-color:var(--peach)">${scen}</div>
+    <div style="font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:10px">❓ ${q}</div>
+    <div class="q-hint">💡 ${hint}</div>
+    <textarea id="sit-a" placeholder="Mobilisez les notions du cours..."></textarea>
+    <button class="btn-lav" id="sit-btn" onclick="submitSit(${id})">🤖 Analyse par l'IA</button>
+    <div class="ai-box" id="ai-box"></div>
+  `;
+}
+window.submitSit=async function(id){
+  const ans=document.getElementById('sit-a').value.trim();
+  if(!ans||ans.length<30){alert('Rédigez une réponse plus complète.');return;}
+  const btn=document.getElementById('sit-btn');btn.disabled=true;btn.textContent='Analyse...';
+  const box=document.getElementById('ai-box');box.className='ai-box show';
+  box.innerHTML=`<div class="ai-hdr"><span class="ai-dot-anim"></span>Analyse en cours...</div><div class="dots"><span></span><span></span><span></span></div>`;
+  const c=chapters.find(x=>x.id===id),s=situations[id];
+  try{
+    const text=await callAI(`Tu es professeur CEJM BTS. Évalue cette mise en situation : 1) Note /20 2) Notions bien mobilisées ✅ 3) Notions manquantes ❌ 4) Correction modèle 150 mots.`,`CHAPITRE : ${c.title}\nSITUATION : ${s?s.scenario:''}\nQUESTION : ${s?s.q:''}\nRÉPONSE : ${ans}`);
+    box.innerHTML=`<div class="ai-hdr">💼 Analyse</div><div class="ai-text">${text}</div>`;
+    awardXP(30,'Mise en situation');S.prog[id]=(S.prog[id]||0)+1;btn.textContent='✅ Analysé';renderChaps();
+  }catch(e){
+    box.innerHTML=`<div class="ai-text">Erreur : ${e.message}</div>`;
+    btn.disabled=false;btn.textContent='🤖 Réessayer';
+  }
+};
+
+function renderQuizRapide(){
+  const avail=Object.keys(quizBank).map(Number);
+  const rid=avail[Math.floor(Math.random()*avail.length)];
+  const c=chapters.find(x=>x.id===rid);
+  document.getElementById('main-content').innerHTML=`
+    <div class="sec-lbl">Quiz aléatoire</div>
+    <div style="background:var(--white);border:1px solid var(--bd);border-radius:14px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      <div class="ch-tag t-${c.tag}">${c.tagLabel}</div>
+      <div style="font-size:14px;font-weight:600;color:var(--ink)">${c.title}</div>
+    </div>
+    <div id="qr-wrap"></div>
+  `;
+  const qs=quizBank[rid];let cur=0,sc=0;
+  function rQR(){
+    const q=qs[cur];
+    const dots=qs.map((_,i)=>`<div class="qdot${i<cur?' done':i===cur?' cur':''}"></div>`).join('');
+    document.getElementById('qr-wrap').innerHTML=`
+      <div class="q-prog">${dots}</div>
+      <div class="q-txt">${q.q}</div>
+      <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="pickQR(${i})">${o}</button>`).join('')}</div>
+      <div class="quiz-fb" id="qfb"></div>
+      <div class="nw" id="qnxt" style="display:none"><button class="btn-main" onclick="nxtQR()" style="margin-top:0">${cur<qs.length-1?'Suivant →':'Résultats'}</button></div>
+    `;
+  }
+  window.pickQR=function(i){
+    const q=qs[cur];
+    document.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
+    document.querySelectorAll('.quiz-opt')[i].classList.add(i===q.ans?'correct':'wrong');
+    if(i!==q.ans)document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+    const fb=document.getElementById('qfb');
+    fb.className='quiz-fb show '+(i===q.ans?'ok':'ko');
+    fb.textContent=(i===q.ans?'✅ ':'')+q.exp;
+    if(i===q.ans)sc++;
+    document.getElementById('qnxt').style.display='flex';
+  };
+  window.nxtQR=function(){
+    cur++;
+    if(cur<qs.length){rQR();return;}
+    const pct=Math.round((sc/qs.length)*100);
+    document.getElementById('qr-wrap').innerHTML=`
+      <div class="score-wrap">
+        <div style="font-size:40px;margin-bottom:8px">${pct>=80?'🏆':pct>=60?'😊':'💪'}</div>
+        <div class="score-num">${sc}/${qs.length}</div>
+        <div class="score-pct">${pct}% de réussite</div>
+      </div>
+      <button class="btn-main" onclick="renderQuizRapide()" style="margin-top:4px">🎲 Nouveau quiz</button>
+    `;
+    awardXP(sc*15,'Quiz rapide');
+  };
+  rQR();
+}
+
+function renderSitRapide(){
+  const ids=Object.keys(situations).map(Number);
+  const rid=ids[Math.floor(Math.random()*ids.length)];
+  const c=chapters.find(x=>x.id===rid),s=situations[rid];
+  document.getElementById('main-content').innerHTML=`
+    <div class="sec-lbl">Mise en situation</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <div class="ch-tag t-${c.tag}">${c.tagLabel}</div>
+      <div style="font-size:13px;font-weight:600;color:var(--ink)">${c.title}</div>
+    </div>
+    <div class="q-ctx" style="border-color:var(--peach)">${s.scenario}</div>
+    <div style="font-size:14px;font-weight:600;color:var(--ink);margin:14px 0 10px">❓ ${s.q}</div>
+    <div class="q-hint">💡 ${s.hint}</div>
+    <textarea id="sr-a" placeholder="Rédigez votre analyse..."></textarea>
+    <button class="btn-lav" id="sr-btn" onclick="submitSR(${rid})">🤖 Correction IA</button>
+    <div class="ai-box" id="ai-sr"></div>
+    <div style="margin-top:12px"><button class="btn-sec" onclick="renderSitRapide()">🔄 Autre situation</button></div>
+  `;
+}
+window.submitSR=async function(id){
+  const ans=document.getElementById('sr-a').value.trim();
+  if(!ans||ans.length<30){alert('Rédigez une réponse plus complète.');return;}
+  const btn=document.getElementById('sr-btn');btn.disabled=true;btn.textContent='Analyse...';
+  const box=document.getElementById('ai-sr');box.className='ai-box show';
+  box.innerHTML=`<div class="ai-hdr"><span class="ai-dot-anim"></span>Analyse en cours...</div><div class="dots"><span></span><span></span><span></span></div>`;
+  const c=chapters.find(x=>x.id===id),s=situations[id];
+  try{
+    const text=await callAI("Professeur CEJM BTS. Évalue la mise en situation : note /20 + points forts + manques + correction modèle 150 mots.",`Chapitre: ${c.title}\nSituation: ${s.scenario}\nQuestion: ${s.q}\nRéponse: ${ans}`);
+    box.innerHTML=`<div class="ai-hdr">💼 Correction</div><div class="ai-text">${text}</div>`;
+    awardXP(30,'Mise en situation');btn.textContent='✅ Soumis';
+  }catch(e){
+    box.innerHTML=`<div class="ai-text">Erreur : ${e.message}</div>`;
+    btn.disabled=false;btn.textContent='🤖 Réessayer';
+  }
+};
+
+function renderProg(){
+  const total=chapters.length,done=chapters.filter(c=>(S.prog[c.id]||0)>=1).length,mastered=chapters.filter(c=>(S.prog[c.id]||0)>=3).length,lv=getLv(S.xp);
+  document.getElementById('main-content').innerHTML=`
+    <div class="save-banner">
+      <span style="font-size:18px">💾</span>
+      <div><div style="font-weight:600;font-size:13px">Progression sauvegardée automatiquement</div><div style="font-size:11px;opacity:.8;margin-top:1px">Conservée localement sur cet appareil.</div></div>
+      <button class="reset-btn" onclick="resetProgress()">Réinitialiser</button>
+    </div>
+    <div class="sec-lbl">Ma progression</div>
+    <div class="metrics-grid">
+      <div class="met-card"><div class="met-ic">⭐</div><div class="met-val">${S.xp}</div><div class="met-lbl">XP Total</div></div>
+      <div class="met-card"><div class="met-ic">📚</div><div class="met-val">${done}/${total}</div><div class="met-lbl">Débutés</div></div>
+      <div class="met-card"><div class="met-ic">🏆</div><div class="met-val">${mastered}</div><div class="met-lbl">Maîtrisés</div></div>
+      <div class="met-card"><div class="met-ic">🔥</div><div class="met-val">${S.streak}</div><div class="met-lbl">Jours de suite</div></div>
+    </div>
+    <div class="lvl-card">
+      <div class="lvl-name">Niveau ${lv.idx+1} · ${lv.n}</div>
+      <div class="xp-track" style="height:10px"><div class="xp-fill" style="width:${Math.min(100,((S.xp-lv.prev)/(lv.max-lv.prev))*100)}%"></div></div>
+      <div style="font-size:12px;color:var(--lav);margin-top:6px">${S.xp} XP · encore ${Math.max(0,lv.max-S.xp)} XP pour le niveau suivant</div>
+    </div>
+    <div class="sec-lbl">Détail par chapitre</div>
+    ${chapters.map(c=>{
+      const p=S.prog[c.id]||0,pct=Math.min(100,Math.round((p/3)*100));
+      return `<div class="prog-row" onclick="openCh(${c.id})">
+        <div class="ch-tag t-${c.tag}" style="min-width:fit-content">${c.tagLabel}</div>
+        <div class="prog-row-title">Ch.${c.num} – ${c.title}</div>
+        <div class="prog-bar-sm"><div class="prog-bar-sm-fill" style="width:${pct}%"></div></div>
+        <div class="prog-pct">${pct}%</div>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+loadState();
+renderChaps();
+</script>
+</body>
+</html>
